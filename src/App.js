@@ -10,7 +10,7 @@ export class App extends Component {
           <NavBar />
         </div>
 
-        <News />
+        <News pageSize={8} />
       </div>
     );
   }
