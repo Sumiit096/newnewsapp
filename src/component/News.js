@@ -22,8 +22,8 @@ export class News extends Component {
       totalResults: "",
     };
   }
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.categories}&apiKey=6caaa1a568c34f00952c43c8446560f0&page=1&pageSize=${this.props.pageSize}`;
+  async updateNews() {
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.categories}&apiKey=6caaa1a568c34f00952c43c8446560f0&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -34,41 +34,59 @@ export class News extends Component {
       totalResults: parsedData.totalResults,
     });
   }
+  async componentDidMount() {
+    this.updateNews();
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.categories}&apiKey=6caaa1a568c34f00952c43c8446560f0&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    // this.setState({ loading: true });
+    // let data = await fetch(url);
+    // let parsedData = await data.json();
+
+    // this.setState({
+    //   loading: false,
+    //   articles: parsedData.articles,
+    //   totalResults: parsedData.totalResults,
+    // });
+  }
 
   hnadleNextClick = async () => {
-    if (!(this.state.page + 1 > Math.ceil(this.state.totalResults / 10))) {
-      let url = `https://newsapi.org/v2/top-headlines?country=${
-        this.state.country
-      }&category=${
-        this.props.categories
-      }&apiKey=6caaa1a568c34f00952c43c8446560f0&page=${
-        this.state.page + 1
-      }&pageSize=${this.props.pageSize}`;
-      this.setState({ loading: true });
-      let data = await fetch(url);
-      let parsedData = await data.json();
+    this.setState({ page: this.state.page + 1 });
+    this.updateNews();
+    // if (!(this.state.page + 1 > Math.ceil(this.state.totalResults / 10))) {
+    //   let url = `https://newsapi.org/v2/top-headlines?country=${
+    //     this.props.country
+    //   }&category=${
+    //     this.props.categories
+    //   }&apiKey=6caaa1a568c34f00952c43c8446560f0&page=${
+    //     this.state.page + 1
+    //   }&pageSize=${this.props.pageSize}`;
+    //   this.setState({ loading: true });
+    //   let data = await fetch(url);
+    //   let parsedData = await data.json();
 
-      this.setState({
-        page: this.state.page + 1,
-        articles: parsedData.articles,
-        loading: false,
-        // totalResults: parsedData.totalResults,
-      });
-      console.log("next");
-    }
+    //   this.setState({
+    //     page: this.state.page + 1,
+    //     articles: parsedData.articles,
+    //     loading: false,
+    //     //totalResults: parsedData.totalResults,
+    //   });
+    //   console.log("next");
+    // }
   };
   handlePreviousClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${
-      this.state.country
-    }&category=${
-      this.props.categories
-    }&apiKey=6caaa1a568c34f00952c43c8446560f0&page=${
-      this.state.page - 1
-    }&pageSize=${this.props.pageSize}`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({ page: this.state.page - 1, articles: parsedData.articles });
-    console.log("previous");
+    this.setState({ page: this.state.page - 1 });
+    this.updateNews();
+
+    // let url = `https://newsapi.org/v2/top-headlines?country=${
+    //   this.props.country
+    // }&category=${
+    //   this.props.categories
+    // }&apiKey=6caaa1a568c34f00952c43c8446560f0&page=${
+    //   this.state.page - 1
+    // }&pageSize=${this.props.pageSize}`;
+    // let data = await fetch(url);
+    // let parsedData = await data.json();
+    // this.setState({ page: this.state.page - 1, articles: parsedData.articles });
+    // console.log("previous");
   };
   render() {
     return (
@@ -86,6 +104,8 @@ export class News extends Component {
                     description={item.description}
                     urlToImage={item.urlToImage}
                     url={item.url}
+                    author={item.author}
+                    date={item.publishedAt}
                   />
                 </div>
               );
