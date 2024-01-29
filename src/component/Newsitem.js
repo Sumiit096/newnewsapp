@@ -16,7 +16,7 @@ export class Newsitem extends Component {
             <h5 className="card-title">{title.slice(0, 40)}...</h5>
             <p className="card-text">
               {description ? description.slice(0, 88) : ""}...
-              <span class="badge bg-secondary">New</span>
+              <span className="badge bg-secondary">New</span>
             </p>
             <a
               href={url}
@@ -26,8 +26,8 @@ export class Newsitem extends Component {
             >
               Read more
             </a>
-            <p class="card-text">
-              <small class="text-muted">
+            <p className="card-text">
+              <small className="text-muted">
                 By{author ? author : "Unknown"}on {new Date(date).toGMTString()}
               </small>
             </p>
