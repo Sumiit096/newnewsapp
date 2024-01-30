@@ -31,25 +31,28 @@ export class News extends Component {
     )} - NewsMonkey`;
   }
   async updateNews() {
+    this.props.setProgress(30);
     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.categories}&apiKey=6caaa1a568c34f00952c43c8446560f0&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    // this.setState({ loading: true });
+    this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
 
     this.setState({
-      //  loading: false,
+      loading: false,
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
     });
+    this.props.setProgress(100);
   }
+
   fetchMoreData = async () => {
     this.setState({ page: this.state.page + 1 });
     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.categories}&apiKey=6caaa1a568c34f00952c43c8446560f0&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    //  this.setState({ loading: true });
+    // this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
     this.setState({
-      //  loading: false,
+      // loading: false,
       articles: this.state.articles.concat(parsedData.articles),
 
       totalResults: parsedData.totalResults,
@@ -117,7 +120,7 @@ export class News extends Component {
           {" "}
           Top Healines - {this.firstUpperCase(this.props.categories)}
         </h2>
-        {/* {this.state.loading && <Spinner />} */}
+        {this.state.loading && <Spinner />}
         <InfiniteScroll
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
